@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "workspaces": [
+    "package",
+    "pack",
+    "PRLinter"
+  ],
+  "devDependencies": {
+    "@astral/pack": "*",
+    "@astral/commitlint-config": "^1.6.1",
+    "@astral/prettier-config": "^1.6.1",
+    "commitlint": "16.2.1",
+    "eslint": "^8.27.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^11.1.2",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "semantic-release": "^19.0.5",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.5",
+    "@semantic-release/exec": "^6.0.3",
+    "vite": "^3.0.4",
+    "vitest": "^0.25.3",
+    "@astral/eslint-config-node": "^1.0.2"
+  },
+  "scripts": {
+    "lint": "npm run lint:all --workspaces --if-present",
+    "lint:types": "npm run lint:types --workspaces --if-present",
+    "publish": "npm run build --workspaces --if-present && npm run publish --workspaces --if-present",
+    "tests": "npm run test --workspaces --if-present"
+  }
+}
