@@ -57,3 +57,9 @@ jobs:
         env:
           CI: true
         run: npm run tests:ci --workspaces --if-present
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/junit.xml'

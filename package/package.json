@@ -1,0 +1,31 @@
+{
+  "name": "@astral/react-query",
+  "version": "1.0.0",
+  "browser": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "node pack",
+    "publish": "npm publish ./lib",
+    "tests": "vitest run",
+    "tests:ci": "vitest run --passWithNoTests --reporter=junit --outputFile.junit=junit.xml",
+    "lint:types": "tsc --noEmit",
+    "lint": "eslint --fix --quiet",
+    "lint:all": "eslint \"**/*.{ts,tsx}\" --fix --quiet"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4",
+    "@vitejs/plugin-react": "^2.2.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@astral/eslint-config-react-ts": "^1.6.1",
+    "eslint-plugin-testing-library": "^5.9.1",
+    "@types/react": "^18.0.12",
+    "react": "^18.2.0"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  }
+}
