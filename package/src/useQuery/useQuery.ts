@@ -46,7 +46,7 @@ export const useQuery = <TData, TError = unknown>(
 
     // делаем так, чтобы запрос не сохранился в кэше
     return {
-      // на всякий случай ответ еще лежит 5 минут в кэше, если нужно будет получить к нему доступ руками
+      // ответ еще лежит 5 минут в кэше, если нужно будет получить к нему доступ руками
       cacheTime: QueryClientCache.Few,
       staleTime: QueryClientCache.NoCache,
     };
