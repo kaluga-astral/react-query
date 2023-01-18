@@ -1,3 +1,3 @@
-## Репозиторий с общими библиотеками
+## @astral/react-query
 
-* [@astral/cryptopro-cades](packages/cryptopro-cades) - пакет для работы с [КриптоПро ЭЦП Browser plug-in](https://www.cryptopro.ru/products/cades/plugin)
+[Docs](https://github.com/kaluga-astral/react-query/tree/main/package/README.md) 
