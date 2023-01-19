@@ -4,6 +4,7 @@
     "lib": [
       "esnext"
     ],
+    "jsx": "react-jsx",
     "moduleResolution": "node",
     "sourceMap": false,
     "declaration": true,
@@ -30,7 +31,8 @@
   "include": [
     "./*.js",
     "./*.ts",
-    "./**/*.ts"
+    "./**/*.ts",
+    "./**/*.tsx"
   ],
   "exclude": [
     "lib"
