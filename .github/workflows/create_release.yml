@@ -40,14 +40,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Build всех пакетов
-      - name: Build package
+      - name: Build packages
+        if: env.CURRENT_VERSION != env.NEXT_VERSION
+        # PACKAGE_VERSION устанавливается в semantic-release.config.js
         run: npm --workspace=@astral/react-query run build
         env:
-          # NEXT_VERSION устанавливается в semantic-release.config.js
-          RELEASE_TAG: ${{ steps.test-package-version.outputs.PACKAGE_VERSION }}
+          RELEASE_TAG: ${{ env.NEXT_VERSION }}
 
       # Паблишинг всех пакетов
       - name: Publish packages
+        if: env.CURRENT_VERSION != env.NEXT_VERSION
         run: npm publish ./lib
         env:
           NPM_PUBLISH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
