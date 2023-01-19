@@ -7,7 +7,13 @@ export {
   type FetchQueryOptions,
 } from './QueryClient';
 
-export { useQuery, type UseQueryOptions, type UseQueryResult } from './hooks';
+export {
+  useQuery,
+  type UseQueryOptions,
+  type UseQueryResult,
+  useQueryClient,
+  type QueryContextOptions,
+} from './hooks';
 
 export * from './enums';
 
