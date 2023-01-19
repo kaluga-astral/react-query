@@ -63,7 +63,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: html
           message: |
-            🚀 <b>Опубликована новая версия пакета @astra/react-query: ${{ env.NEXT_VERSION }} !</b>
+            🚀 <b>Опубликована новая версия пакета @astral/react-query: ${{ env.NEXT_VERSION }} !</b>
 
             ⚡️ <a href="https://github.com/kaluga-astral/react-query/releases/tag/v${{ env.NEXT_VERSION }}">Changelog</a>
 
