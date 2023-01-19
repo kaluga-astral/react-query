@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 module.exports = {
   branches: ['main', { name: 'dev', prerelease: 'dev' }],
-  repositoryUrl: 'https://github.com/kaluga-astral/reqct-query',
+  repositoryUrl: 'https://github.com/kaluga-astral/react-query',
   plugins: [
     [
       '@semantic-release/commit-analyzer',
