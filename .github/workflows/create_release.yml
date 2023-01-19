@@ -41,7 +41,7 @@ jobs:
 
       # Build всех пакетов
       - name: Build package
-        run: npm run build
+        run: npm --workspace=@astral/react-query run build
         env:
           # NEXT_VERSION устанавливается в semantic-release.config.js
           RELEASE_TAG: ${{ steps.test-package-version.outputs.PACKAGE_VERSION }}
