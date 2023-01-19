@@ -7,7 +7,8 @@ import { useMemo } from 'react';
 
 import { useQueryClient } from '../useQueryClient';
 import { QueryFetchPolicy, QueryKey } from '../../types';
-import { QueryClientCache } from '../../enums';
+
+import { getQueryOptions } from './utils';
 
 export type UseQueryOptions<TData, TError = unknown> = UseTanStackQueryOptions<
   TData,
@@ -39,27 +40,14 @@ export const useQuery = <TData, TError = unknown>(
   const { fetchPolicy = queryClient.defaultFetchPolicy, ...queryOptions } =
     options;
 
-  const { cacheTime, staleTime, queryKey } = useMemo<{
-    cacheTime: number;
-    staleTime: number;
-    queryKey: QueryKey;
-  }>(
+  const { cacheTime, staleTime, queryKey } = useMemo(
     () =>
-      fetchPolicy === 'network-only'
-        ? {
-            // подмешивается доп. ключ для того, чтобы результат запроса не взялся из кэша
-            queryKey: [...key, 'no-cache'],
-            // не кэшируем запрос с 'no-cache' ключем
-            cacheTime: QueryClientCache.NoCache,
-            // не кэшируем запрос с 'no-cache' ключем
-            staleTime: QueryClientCache.NoCache,
-          }
-        : {
-            queryKey: key,
-            cacheTime: QueryClientCache.MaxLong,
-            staleTime: QueryClientCache.MaxLong,
-          },
-    [key, fetchPolicy],
+      getQueryOptions({
+        ...options,
+        queryKey: key,
+        fetchPolicy,
+      }),
+    [key, fetchPolicy, options.staleTime, options.cacheTime],
   );
 
   return useTanStackQuery<TData, TError>(queryKey, fnData, {
