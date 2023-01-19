@@ -53,13 +53,11 @@ export const useQuery = <TData, TError = unknown>(
             cacheTime: QueryClientCache.NoCache,
             // не кэшируем запрос с 'no-cache' ключем
             staleTime: QueryClientCache.NoCache,
-            fetchPolicy,
           }
         : {
             queryKey: key,
             cacheTime: QueryClientCache.MaxLong,
             staleTime: QueryClientCache.MaxLong,
-            fetchPolicy,
           },
     [key, fetchPolicy],
   );
