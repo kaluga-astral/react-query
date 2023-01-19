@@ -1,66 +1,48 @@
-import { createQueryClient } from './QueryClient';
+import { QueryClient, createQueryClient } from './QueryClient';
 
 describe('QueryClient.fetchQuery', () => {
-  async function* createRequests() {
-    yield '1';
-    yield '2';
-  }
+  const queryKey = ['id'];
+  let queryClient: QueryClient;
 
-  it('options: по дефолту ответ не кэшируется', async () => {
-    const queryClient = createQueryClient();
-    const requests = createRequests();
-
-    const callRequest = () =>
-      queryClient.fetchQuery<string | void>(['id'], () =>
-        requests.next().then(({ value }) => value),
-      );
-
-    const res1 = await callRequest();
-
-    expect(res1).toBe('1');
-
-    const res2 = await callRequest();
-
-    expect(res2).toBe('2');
+  beforeEach(() => {
+    queryClient = createQueryClient();
+    queryClient.setQueryData(queryKey, '1');
   });
 
-  it('options:fetchPolicy=network-only: ответ не кэшируется', async () => {
-    const queryClient = createQueryClient();
-    const requests = createRequests();
+  it('options:fetchPolicy: по дефолту ответ не достается из кэша', async () => {
+    const res = await queryClient.fetchQuery<string | void>(
+      queryKey,
+      () => '2',
+    );
 
-    const callRequest = () =>
-      queryClient.fetchQuery<string | void>(
-        ['id'],
-        () => requests.next().then(({ value }) => value),
-        { fetchPolicy: 'network-only' },
-      );
-
-    const res1 = await callRequest();
-
-    expect(res1).toBe('1');
-
-    const res2 = await callRequest();
-
-    expect(res2).toBe('2');
+    expect(res).toBe('2');
   });
 
-  it('options:fetchPolicy=cache-first: второй запрос отдаст ответ из кэша', async () => {
-    const queryClient = createQueryClient();
-    const requests = createRequests();
+  it('options:fetchPolicy=network-only: ответ не достается из кэша', async () => {
+    const res = await queryClient.fetchQuery<string | void>(
+      queryKey,
+      () => '2',
+      { fetchPolicy: 'network-only' },
+    );
 
-    const callRequest = () =>
-      queryClient.fetchQuery<string | void>(
-        ['id'],
-        () => requests.next().then(({ value }) => value),
-        { fetchPolicy: 'cache-first' },
-      );
+    expect(res).toBe('2');
+  });
 
-    const res1 = await callRequest();
+  it('options:fetchPolicy=network-only: ответ кэшируется', async () => {
+    await queryClient.fetchQuery<string | void>(queryKey, () => '2', {
+      fetchPolicy: 'network-only',
+    });
 
-    expect(res1).toBe('1');
+    expect(queryClient.getQueryData(queryKey)).toBe('2');
+  });
 
-    const res2 = await callRequest();
+  it('options:fetchPolicy=cache-first: ответ достается из кэша', async () => {
+    const res = await queryClient.fetchQuery<string | void>(
+      queryKey,
+      () => '2',
+      { fetchPolicy: 'cache-first' },
+    );
 
-    expect(res2).toBe('1');
+    expect(res).toBe('1');
   });
 });

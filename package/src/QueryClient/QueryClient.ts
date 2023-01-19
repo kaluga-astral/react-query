@@ -1,14 +1,13 @@
 import {
   QueryClientConfig,
   QueryFunction,
-  QueryKey,
   FetchQueryOptions as TanstackFetchQueryOptions,
   QueryClient as TanstackQueryClient,
   parseQueryArgs,
 } from '@tanstack/react-query';
 
 import { QueryClientCache } from '../enums';
-import { QueryFetchPolicy } from '../types';
+import { QueryFetchPolicy, QueryKey } from '../types';
 
 type FetchQueryOptions<
   TQueryFnData = unknown,
@@ -29,6 +28,8 @@ type FetchQueryOptions<
  * @description Клиент для управления кэшем
  */
 export class QueryClient<TError = unknown> extends TanstackQueryClient {
+  public defaultFetchPolicy: QueryFetchPolicy = 'network-only';
+
   /**
    * @description Позволяет выполнять запрос вне контекста react. По дефолту не кэширует ответ. Для включения кэширования необходимо использовать fetchPolicy: 'cache-first'
    * @param options.fetchPolicy - Политика кэширования
@@ -96,21 +97,25 @@ export class QueryClient<TError = unknown> extends TanstackQueryClient {
     arg3?: FetchQueryOptions<TQueryFnData, TQueryError, TData, TQueryKey>,
   ): Promise<TData> {
     const args = parseQueryArgs(arg1, arg2, arg3);
+    const { fetchPolicy = this.defaultFetchPolicy } = args;
 
-    if (args.fetchPolicy === 'cache-first') {
-      return super.fetchQuery({
-        ...args,
-        cacheTime: QueryClientCache.MaxLong,
-        staleTime: QueryClientCache.MaxLong,
-      });
-    }
+    const { cacheTime, staleTime } =
+      fetchPolicy === 'network-only'
+        ? {
+            // кэшируем ответ, чтобы к нему можно было получить доступ в будущем
+            cacheTime: QueryClientCache.MaxLong,
+            // этот парамер позволит не брать для этого запроса данные из кэша
+            staleTime: QueryClientCache.NoCache,
+          }
+        : {
+            cacheTime: QueryClientCache.MaxLong,
+            staleTime: QueryClientCache.MaxLong,
+          };
 
-    // если не cache-first, то не кэшируем ответ
-    return super.fetchQuery({
+    return super.fetchQuery<TQueryFnData, TQueryError, TData, TQueryKey>({
       ...args,
-      // ответ еще лежит 5 минут в кэше, если нужно будет получить к нему доступ руками
-      cacheTime: QueryClientCache.Few,
-      staleTime: QueryClientCache.NoCache,
+      cacheTime,
+      staleTime,
     });
   }
 }
