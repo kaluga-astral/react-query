@@ -1,5 +1,7 @@
 export * from '@tanstack/react-query';
 
+export { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
+
 export {
   QueryClient,
   createQueryClient,
@@ -18,3 +20,5 @@ export {
 export * from './enums';
 
 export * from './types';
+
+export * from './ReactQueryDevtools';

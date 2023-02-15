@@ -13,7 +13,8 @@
     "lint:all": "eslint \"**/*.{ts,tsx}\" --fix --quiet"
   },
   "dependencies": {
-    "@tanstack/react-query": "^4.22.0"
+    "@tanstack/react-query": "^4.22.0",
+    "@tanstack/react-query-devtools": "^4.24.6"
   },
   "devDependencies": {
     "typescript": "^4.9.4",
