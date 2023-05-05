@@ -122,6 +122,13 @@ export class QueryClient<TError = unknown> extends TanstackQueryClient {
 
 /**
  * @description Фабрика для создания QueryClient с дефолтными параметрами
+ * @param {QueryClientConfig} config - Конфиг QueryClient
+ * @example
+ * ```ts
+ * createQueryClient({ defaultOptions: {} })
+ * createQueryClient()
+ * ```
+ *
  * По-дефолту отключается refetch при потере фокуса на странице + устанавливается долгий кэш на 2 часа
  */
 export const createQueryClient = (config?: QueryClientConfig) => {
