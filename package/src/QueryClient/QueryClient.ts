@@ -124,15 +124,19 @@ export class QueryClient<TError = unknown> extends TanstackQueryClient {
  * @description Фабрика для создания QueryClient с дефолтными параметрами
  * По-дефолту отключается refetch при потере фокуса на странице + устанавливается долгий кэш на 2 часа
  */
-export const createQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 0,
-        cacheTime: QueryClientCache.MaxLong,
-        refetchOnWindowFocus: false,
-      },
+export const createQueryClient = (config?: QueryClientConfig) => {
+  const defaultOptions = {
+    queries: {
+      staleTime: 0,
+      cacheTime: QueryClientCache.MaxLong,
+      refetchOnWindowFocus: false,
+      retry: false,
     },
-  });
+  };
+
+  return new QueryClient(config || { defaultOptions });
+};
+
+export { QueryClientCache };
 
 export type { QueryFunction, FetchQueryOptions, QueryClientConfig };
