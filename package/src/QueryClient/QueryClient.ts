@@ -122,17 +122,32 @@ export class QueryClient<TError = unknown> extends TanstackQueryClient {
 
 /**
  * @description Фабрика для создания QueryClient с дефолтными параметрами
+ * @param {QueryClientConfig} config - Конфиг QueryClient
+ * @example
+ * ```ts
+ * createQueryClient({ defaultOptions: {} })
+ * createQueryClient()
+ * ```
+ *
  * По-дефолту отключается refetch при потере фокуса на странице + устанавливается долгий кэш на 2 часа
  */
-export const createQueryClient = () =>
-  new QueryClient({
+export const createQueryClient = (config?: QueryClientConfig) => {
+  const mergedConfig = {
+    ...config,
     defaultOptions: {
+      ...config?.defaultOptions,
       queries: {
+        ...config?.defaultOptions?.queries,
         staleTime: 0,
         cacheTime: QueryClientCache.MaxLong,
         refetchOnWindowFocus: false,
       },
     },
-  });
+  };
+
+  return new QueryClient(mergedConfig);
+};
+
+export { QueryClientCache };
 
 export type { QueryFunction, FetchQueryOptions, QueryClientConfig };
